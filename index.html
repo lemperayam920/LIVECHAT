@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiveChat - Customer Support</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* ANIMATED GRADIENT BACKGROUND */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                #667eea,
+                #764ba2,
+                #f093fb,
+                #4facfe,
+                #00f2fe,
+                #43e97b,
+                #38f9d7
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* FLOATING PARTICLES */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* CONTENT CONTAINER */
+        .container {
+            text-align: center;
+            z-index: 10;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* TITLE */
+        .title {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* SUBTITLE */
+        .subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 50px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* LIVECHAT BUTTON */
+        .livechat-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 25px 50px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s infinite;
+            overflow: hidden;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 15px 60px rgba(102, 126, 234, 0.6);
+                transform: scale(1.05);
+            }
+        }
+
+        .livechat-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .livechat-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .livechat-btn:hover {
+            transform: translateY(-5px) scale(1.08);
+            box-shadow: 0 20px 80px rgba(102, 126, 234, 0.6);
+        }
+
+        .livechat-btn:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* LIVECHAT ICON */
+        .livechat-icon {
+            position: relative;
+            z-index: 1;
+            font-size: 32px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .livechat-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* GLOW RING */
+        .glow-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .glow-ring::before,
+        .glow-ring::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .glow-ring::before {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .glow-ring::after {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* FOOTER TEXT */
+        .footer-text {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+                margin-bottom: 40px;
+            }
+
+            .livechat-btn {
+                padding: 20px 40px;
+                font-size: 20px;
+            }
+
+            .livechat-icon {
+                font-size: 28px;
+            }
+
+            .glow-ring {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 28px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                padding: 0 20px;
+            }
+
+            .livechat-btn {
+                padding: 18px 35px;
+                font-size: 18px;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ANIMATED GRADIENT BACKGROUND -->
+    <div class="gradient-bg"></div>
+
+    <!-- FLOATING PARTICLES -->
+    <div class="particles" id="particles"></div>
+
+    <!-- GLOW RING -->
+    <div class="glow-ring"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <h1 class="title">Customer Support</h1>
+        <p class="subtitle">Kami siap membantu Anda 24/7</p>
+        
+        <!-- LIVECHAT BUTTON -->
+        <a href="https://app.chaport.com/WIDGET_ID" target="_blank" class="livechat-btn">
+            <span class="livechat-icon">💬</span>
+            <span class="livechat-text">LIVE CHAT</span>
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-text">
+        Click untuk memulai percakapan dengan tim kami
+    </div>
+
+    <script>
+        // CREATE FLOATING PARTICLES
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Random position
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            
+            // Random animation delay
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            
+            // Random animation duration
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            
+            particlesContainer.appendChild(particle);
+        }
+
+        // BUTTON CLICK SOUND EFFECT (Optional)
+        const button = document.querySelector('.livechat-btn');
+        button.addEventListener('click', function() {
+            // Add ripple effect
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 100);
+        });
+
+        // CHAPORT WIDGET INTEGRATION (Optional)
+        // Ganti WIDGET_ID dengan ID widget Chaport lu
+        (function(w,d,v3){
+            w.chaportConfig = {
+                appId : 'YOUR_CHAPORT_APP_ID'
+            };
+
+            if(w.chaport)return;
+            v3=w.chaport={};
+            v3._q=[];
+            v3._l={};
+            v3.q=function(){v3._q.push(arguments)};
+            v3.on=function(e,fn){if(!v3._l[e])v3._l[e]=[];v3._l[e].push(fn)};
+            var s=d.createElement('script');
+            s.type='text/javascript';
+            s.async=true;
+            s.src='https://app.chaport.com/javascripts/insert.js';
+            d.head.appendChild(s);
+        })(window, document);
+    </script>
+</body>
+</html>
