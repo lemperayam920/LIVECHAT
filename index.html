@@ -381,26 +381,6 @@
                 this.style.transform = '';
             }, 100);
         });
-
-        // CHAPORT WIDGET INTEGRATION (Optional)
-        // Ganti WIDGET_ID dengan ID widget Chaport lu
-        (function(w,d,v3){
-            w.chaportConfig = {
-                appId : '69be9bc780e4e77ea0af212f'
-            };
-
-            if(w.chaport)return;
-            v3=w.chaport={};
-            v3._q=[];
-            v3._l={};
-            v3.q=function(){v3._q.push(arguments)};
-            v3.on=function(e,fn){if(!v3._l[e])v3._l[e]=[];v3._l[e].push(fn)};
-            var s=d.createElement('script');
-            s.type='text/javascript';
-            s.async=true;
-            s.src='https://app.chaport.com/javascripts/insert.js';
-            d.head.appendChild(s);
-        })(window, document);
     </script>
     <!-- Start of bujangltd Zendesk Widget script -->
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=b003d456-f88e-427d-874f-0775021d4181"> </script>
